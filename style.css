@@ -12,7 +12,7 @@ body {
   min-width: 320px;
   font-family: sans-serif;
   font-weight: 400;
-  background-color: #000;
+  background-color: #fff5f0cc;
   color: #fff;
 }
 img {
@@ -52,7 +52,7 @@ h3 {
 }
 .title {
   text-align: center;
-  color: #009a5c;
+  color: #96c21a;
 }
 
 .products {
@@ -64,46 +64,68 @@ h3 {
   gap: 20px;
 }
 .products-card {
-  padding: 20px;
   display: flex;
   flex-direction: column;
   width: 300px;
   min-height: 290px;
-  border: 1px solid #fdff0e;
-  border-radius: 11px;
+  background-color: #bddc66;
+  box-shadow: -4px 0px 9px 0px rgb(0 0 0 / 31%);
+  border-radius: 30px;
+}
+.product-card-container {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  min-height: 250px;
+}
+.products-card h2 {
+  margin-bottom: 20px;
+  font-size: 18px;
+  text-align: center;
+  color: #828282;
+}
+.products-card img {
+  width: 100%;
+  height: 260px;
+  border-top-left-radius: 30px;
+  border-top-right-radius: 30px;
+}
+
+.products-card p {
+  margin-bottom: 20px;
+  font-size: 15px;
+  line-height: 22px;
+  color: #fff;
+}
+.bottom-box {
+  margin-top: auto;
+  display: flex;
+  justify-content: space-between;
+}
+.price {
+  font-size: 20px;
+  font-weight: bold;
+  color: #b25895;
+}
+.like {
+  font-size: 20px;
+  cursor: pointer;
 }
 .load-btn {
   margin: 0 auto;
   padding: 10px;
   display: block;
-  color: #fcff0f;
-  border: 2px solid #fcff0f;
+  color: #959595;
+  border: 2px solid #959595;
   font-size: 16px;
   font-weight: bold;
   text-transform: uppercase;
   border-radius: 20px;
 }
 .load-btn:hover {
-  color: #0d9d08;
-  background-color: #adffd6;
-  border: 2px solid #10af02;
+  color: #2f2e2e;
+  background-color: #ffffff;
+  border: 2px solid #2f2e2e;
   transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out,
     border 0.3s ease-in-out;
-}
-.products-card h2 {
-  font-size: 18px;
-  text-align: center;
-  color: #077e71;
-}
-.products-card p {
-  margin-bottom: 20px;
-  font-size: 17px;
-  color: #fff;
-}
-.price {
-  display: flex;
-  margin-top: auto;
-  font-size: 20px;
-  font-weight: bold;
-  color: #10af02;
 }

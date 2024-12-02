@@ -16,10 +16,23 @@ function addProduct() {
   const { title, description, image, price } = getRandomProduct();
 
   productCard.innerHTML = `
+  <img src="${image}" class="card-image">
+  <div class="product-card-container">
     <h2>${title}</h2>
-    <span class="card-image">${image}</span>
     <p>${description}</p>
-    <span class="price">${price} ₽</span>
+    <div class="bottom-box">
+      <div class="like-container">
+        <i class="fas fa-heart like"></i>
+        <i class="far fa-heart like"></i>
+      </div>
+      <span class="price">${price} ₽</span>
+    </div>
+  </div>
+  
+  
+
+   
+
   `;
 
   productContainer.appendChild(productCard);
