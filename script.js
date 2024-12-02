@@ -1,19 +1,34 @@
+import getRandomProduct from "./math.js";
+
 const productContainer = document.getElementById("products-container");
 const loadBtn = document.getElementById("load-btn");
-import products from "./data.js";
 
-function getRandomProduct() {
-  const randomIndex = Math.floor(Math.random() * products.length);
-  return products[randomIndex];
-}
-
+let addedProducts = [];
 let currentProductCount = 0;
 
+// Функция для переключения состояния "избранного"
+function toggleFavorite(id, likeIcon) {
+  const product = addedProducts.find((p) => p.id === id);
+  if (product) {
+    product.isFavorite = !product.isFavorite;
+    likeIcon.classList.toggle("fas", product.isFavorite);
+    likeIcon.classList.toggle("far", !product.isFavorite);
+  }
+}
+
 function addProduct() {
+  let currentProduct;
+
+  // Испольхую цикл, для проверки совпадения генерируемых продуктов, если id совпадает - то генерируем новый
+  do {
+    currentProduct = getRandomProduct();
+  } while (addedProducts.some((el) => el.id === currentProduct.id)); // проверяем, совпадает ли id полученного продукта, в массиве addedProducts
+  addedProducts.push({ ...currentProduct, isFavorite: false });
+
   const productCard = document.createElement("div");
   productCard.classList.add("products-card");
 
-  const { title, description, image, price } = getRandomProduct();
+  const { id, title, description, image, price } = currentProduct;
 
   productCard.innerHTML = `
   <img src="${image}" class="card-image">
@@ -22,17 +37,11 @@ function addProduct() {
     <p>${description}</p>
     <div class="bottom-box">
       <div class="like-container">
-        <i class="fas fa-heart like"></i>
-        <i class="far fa-heart like"></i>
+        <i class="far fa-heart like" data-id="${id}"></i>
       </div>
       <span class="price">${price} ₽</span>
     </div>
   </div>
-  
-  
-
-   
-
   `;
 
   productContainer.appendChild(productCard);
@@ -41,6 +50,9 @@ function addProduct() {
   if (currentProductCount > 8) {
     loadBtn.style.display = "none";
   }
+
+  const likeIcon = productCard.querySelector(".like");
+  likeIcon.addEventListener("click", () => toggleFavorite(id, likeIcon));
 }
 
 loadBtn.addEventListener("click", () => {

@@ -12,7 +12,7 @@ body {
   min-width: 320px;
   font-family: sans-serif;
   font-weight: 400;
-  background-color: #fff5f0cc;
+  background-color: #9090902b;
   color: #fff;
 }
 img {
@@ -123,9 +123,9 @@ h3 {
   border-radius: 20px;
 }
 .load-btn:hover {
-  color: #2f2e2e;
+  color: #b25895;
   background-color: #ffffff;
-  border: 2px solid #2f2e2e;
+  border: 2px solid #b25895;
   transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out,
     border 0.3s ease-in-out;
 }
