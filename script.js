@@ -1,13 +1,38 @@
+import products from "./data.js";
+import { createProductCard } from "./handlers/createCard.js";
+import { localStorageGetItem, localStorageSetItem } from "./localStorage.js";
 import getRandomProduct from "./math.js";
 
 const productContainer = document.getElementById("products-container");
 const loadBtn = document.getElementById("load-btn");
+const PRODUCTS_STORAGE_KEY = "addedProducts";
 
 let addedProducts = [];
 let currentProductCount = 0;
 
+// Функция для отображения товара
+function renderProduct(product) {
+  createProductCard(product, productContainer);
+  hiddenBtnLoadCardProducts();
+}
+
+// Функция для рендера всех товаров из localStorage
+function renderAllProductsFromStorage() {
+  const storedProducts = localStorageGetItem(PRODUCTS_STORAGE_KEY);
+  if (storedProducts) {
+    addedProducts = JSON.parse(storedProducts); // Преобразуем строку обратно в массив
+    addedProducts.forEach((el) => renderProduct(el)); // Отображаем все товары
+    currentProductCount = addedProducts.length; // Обновляем количество продуктов
+  }
+}
+
+// Функция для сохранения товаров в localStorage
+function saveProductsToStorage() {
+  localStorageSetItem(PRODUCTS_STORAGE_KEY, addedProducts); // Сохраняем массив товаров
+}
+
 // Функция для переключения состояния "избранного"
-function toggleFavorite(id, likeIcon) {
+function toggleFavoriteIcon(id, likeIcon) {
   const product = addedProducts.find((p) => p.id === id);
   if (product) {
     product.isFavorite = !product.isFavorite;
@@ -25,40 +50,31 @@ function addProduct() {
   } while (addedProducts.some((el) => el.id === currentProduct.id)); // проверяем, совпадает ли id полученного продукта, в массиве addedProducts
   addedProducts.push({ ...currentProduct, isFavorite: false });
 
-  const productCard = document.createElement("div");
-  productCard.classList.add("products-card");
+  renderProduct(currentProduct);
+  saveProductsToStorage(); // Сохраняем товары в localStorage
+}
 
-  const { id, title, description, image, price } = currentProduct;
+function loadCardProducts() {
+  loadBtn.addEventListener("click", () => {
+    const numberOfProductsToLoad = 2;
 
-  productCard.innerHTML = `
-  <img src="${image}" class="card-image">
-  <div class="product-card-container">
-    <h2>${title}</h2>
-    <p>${description}</p>
-    <div class="bottom-box">
-      <div class="like-container">
-        <i class="far fa-heart like" data-id="${id}"></i>
-      </div>
-      <span class="price">${price} ₽</span>
-    </div>
-  </div>
-  `;
+    for (let i = 0; i < numberOfProductsToLoad; i++) {
+      addProduct();
+    }
+  });
+}
 
-  productContainer.appendChild(productCard);
+function hiddenBtnLoadCardProducts() {
   currentProductCount++;
-
   if (currentProductCount > 8) {
     loadBtn.style.display = "none";
   }
-
-  const likeIcon = productCard.querySelector(".like");
-  likeIcon.addEventListener("click", () => toggleFavorite(id, likeIcon));
 }
 
-loadBtn.addEventListener("click", () => {
-  const numberOfProductsToLoad = 2;
-
-  for (let i = 0; i < numberOfProductsToLoad; i++) {
-    addProduct();
-  }
+window.addEventListener("DOMContentLoaded", () => {
+  // Рендерим все продукты из localStorage
+  renderAllProductsFromStorage();
+  loadCardProducts();
 });
+
+export { toggleFavoriteIcon };
