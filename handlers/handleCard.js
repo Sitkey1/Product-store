@@ -23,6 +23,7 @@ function createProductCard(currentProduct, productContainer) {
   productContainer.appendChild(productCard);
 
   toggleFavorite(productCard, id, isFavorite);
+  animateCardAddition(productCard);
 }
 
 function toggleFavorite(productCard, id, isFavorite) {
@@ -37,6 +38,11 @@ function toggleFavorite(productCard, id, isFavorite) {
   }
 
   likeIcon.addEventListener("click", () => toggleFavoriteIcon(id, likeIcon));
+}
+
+function animateCardAddition(productCard) {
+  productCard.classList.add("fade-in");
+  setTimeout(() => productCard.classList.remove("fade-in"), 300);
 }
 
 export { createProductCard };

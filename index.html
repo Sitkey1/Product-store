@@ -13,9 +13,21 @@
   <body>
     <div class="container">
       <h1 class="title">Product Store</h1>
+      <div id="sort-container" class="sort-container">
+        <span>Сортировка по:</span>
+        <button id="sort-price" class="sort btn-reset">Цене</button>
+        <button id="sort-alphabet" class="sort btn-reset">Алфавиту</button>
+      </div>
+
       <div id="products-container" class="products"></div>
-      <button id="load-btn" class="load-btn btn-reset">load products</button>
-      <button id="clear-btn" class="clear-btn btn-reset">clear</button>
+      <div class="btn-container">
+        <button id="load-btn" class="load-btn btn-reset button">
+          Загрузка товаров
+        </button>
+        <button id="clear-btn" class="clear-btn btn-reset button">
+          Очистить
+        </button>
+      </div>
     </div>
     <script type="module" src="script.js"></script>
   </body>

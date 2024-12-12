@@ -9,6 +9,10 @@ import getRandomProduct from "./math.js";
 const productContainer = document.getElementById("products-container");
 const loadBtn = document.getElementById("load-btn");
 const clearBtn = document.getElementById("clear-btn");
+const sortContainer = document.getElementById("sort-container");
+const sortByPriceBtn = document.getElementById("sort-price");
+const sortByAlphabetBtn = document.getElementById("sort-alphabet");
+
 const PRODUCTS_STORAGE_KEY = "addedProducts";
 const MAX_PRODUCTS_COUNT = 8;
 
@@ -45,8 +49,10 @@ function toggleButtonVisibility() {
   loadBtn.style.display =
     addedProducts.length > MAX_PRODUCTS_COUNT ? "none" : "block";
   clearBtn.style.display = !addedProducts.length ? "none" : "block";
+  sortContainer.style.display = !addedProducts.length ? "none" : "block";
 }
 
+// Функция добавления товаров
 function addProduct() {
   let currentProduct;
   // Испольхую цикл, для проверки совпадения генерируемых продуктов, если id совпадает - то генерируем новый
@@ -80,10 +86,41 @@ function deleteCardProducts() {
   });
 }
 
+// Функция сортировки товаров по цене
+function sortByPrice() {
+  sortByPriceBtn.addEventListener("click", () => {
+    productContainer.innerHTML = ""; // Очистить все карточки
+    addedProducts.sort((a, b) => a.price - b.price); // Сортируем по цене
+    saveProductsToStorage(); // Сохраняем отсортированные по цене товары в LS
+    renderAllProductsFromStorage(); // Переотрисовываем продукты
+  });
+}
+
+// Функция сортировки товаров по алфавиту
+function sortByAlphabet() {
+  sortByAlphabetBtn.addEventListener("click", () => {
+    productContainer.innerHTML = ""; // Очистить все карточки
+    addedProducts.sort((a, b) => {
+      if (a.title < b.title) {
+        return -1;
+      }
+      if (a.title > b.title) {
+        return 1;
+      }
+      return 0;
+    });
+
+    saveProductsToStorage(); // Сохраняем отсортированные по цене товары в LS
+    renderAllProductsFromStorage(); // Переотрисовываем продукты
+  });
+}
+
 window.addEventListener("DOMContentLoaded", () => {
   renderAllProductsFromStorage(); // Рендерим все продукты из localStorage
   loadCardProducts(); // Загрузка товаров по клику
   deleteCardProducts(); // Удаление карточек товаров из DOM и LocalStorage
+  sortByPrice(); // Сортировка по цене
+  sortByAlphabet(); // Сортировка по алфавиту
   toggleButtonVisibility(); // Обновляем видимость кнопок загрузка/очистка
 });
 
