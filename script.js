@@ -13,33 +13,20 @@ const PRODUCTS_STORAGE_KEY = "addedProducts";
 const MAX_PRODUCTS_COUNT = 8;
 
 let addedProducts = [];
-let currentProductCount = 0;
-
-// Функция для отображения товара
-function renderProduct(product) {
-  createProductCard(product, productContainer);
-}
 
 // Функция для рендера всех товаров из localStorage
 function renderAllProductsFromStorage() {
   const storedProducts = localStorageGetItem(PRODUCTS_STORAGE_KEY);
   if (storedProducts) {
     addedProducts = JSON.parse(storedProducts); // Преобразуем строку обратно в массив
-    addedProducts.forEach((el) => renderProduct(el)); // Отображаем все товары
-    currentProductCount = addedProducts.length; // Обновляем количество продуктов
-    toggleLoadButtonVisibility();
+    addedProducts.forEach((el) => createProductCard(el, productContainer)); // Отображаем все товары
+    toggleButtonVisibility; //Обновляем видимость кнопок
   }
 }
 
 // Функция для сохранения товаров в localStorage
 function saveProductsToStorage() {
   localStorageSetItem(PRODUCTS_STORAGE_KEY, addedProducts); // Сохраняем массив товаров
-}
-
-// Функция для удаления всех товаров из localStorage
-function clearProductsToStorage() {
-  // Обработчик для кнопки удаления
-  localStorageClear(PRODUCTS_STORAGE_KEY);
 }
 
 // Функция для переключения состояния "избранного"
@@ -53,14 +40,10 @@ function toggleFavoriteIcon(id, likeIcon) {
     saveProductsToStorage();
   }
 }
-
-// Функция для скрытия кнопки загрузки
-function toggleLoadButtonVisibility() {
+// Функция отображения кнопок загрузки/очистки
+function toggleButtonVisibility() {
   loadBtn.style.display =
     addedProducts.length > MAX_PRODUCTS_COUNT ? "none" : "block";
-}
-// Функция для скрытия кнопки удаления
-function toggleClearButtonVisibility() {
   clearBtn.style.display = !addedProducts.length ? "none" : "block";
 }
 
@@ -72,17 +55,9 @@ function addProduct() {
   } while (addedProducts.some((el) => el.id === currentProduct.id)); // проверяем, совпадает ли id полученного продукта, в массиве addedProducts
   addedProducts.push({ ...currentProduct, isFavorite: false });
 
-  currentProductCount++; // Увеличиваем счетчик продуктов
-  renderProduct(currentProduct); // Отображаем карточки с товарами
+  createProductCard(currentProduct, productContainer); // Отображаем карточки с товарами
   saveProductsToStorage(); // Сохраняем товары в localStorage
-  toggleLoadButtonVisibility(); // Обновляем видимость кнопки загрузки
-  toggleClearButtonVisibility(); // Обновляем видимость кнопки удаления
-}
-
-// Функция для удаления карточек товаров из DOM
-function removeProduct() {
-  const child = productContainer.querySelector(".products-card");
-  if (child) child.remove();
+  toggleButtonVisibility(); // Обновляем видимость кнопок загрузка/очистка
 }
 
 // Функция загрузки товаров по клику
@@ -98,15 +73,10 @@ function loadCardProducts() {
 // Функция удаления товаров по клику
 function deleteCardProducts() {
   clearBtn.addEventListener("click", () => {
-    clearProductsToStorage(); // Очищаем товары в LocalStorage
-
-    for (let i = 0; i < addedProducts.length; i++) {
-      removeProduct();
-    }
+    productContainer.innerHTML = ""; // Очистить все карточки
     addedProducts = []; // Очищаем массив с товарами
-
-    toggleClearButtonVisibility(); // Обновляем видимость кнопки удаления
-    toggleLoadButtonVisibility(); // Обновляем видимость кнопки загрузки
+    localStorageClear(); // Очищаем LocalStorage
+    toggleButtonVisibility(); // Обновляем видимость кнопок загрузка/очистка
   });
 }
 
@@ -114,7 +84,7 @@ window.addEventListener("DOMContentLoaded", () => {
   renderAllProductsFromStorage(); // Рендерим все продукты из localStorage
   loadCardProducts(); // Загрузка товаров по клику
   deleteCardProducts(); // Удаление карточек товаров из DOM и LocalStorage
-  toggleClearButtonVisibility(); // Скрываем кнопку очистки , когда товаров нет
+  toggleButtonVisibility(); // Обновляем видимость кнопок загрузка/очистка
 });
 
 export { toggleFavoriteIcon };
